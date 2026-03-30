@@ -1,0 +1,65 @@
+---------------------Colectia Carti---------------------
+{
+  "_id": "ObjectId",
+  "title": "String",
+  "author_id": "ObjectId",
+  "publication_date": "Date",
+  "price": "Number",
+  "genre": ["String"],
+  "tags": "/Regular Expression/",
+  "available": "Boolean",
+  "details": {
+    "pages": "Number",
+    "publisher": "String"
+  },
+  "reviews": [
+    {
+      "user": "String",
+      "rating": "Number",
+      "comment": "String"
+    }
+  ]
+}
+
+---------------------Colectia Autori---------------------
+{
+  "_id": "ObjectId",
+  "name": "String",
+  "birthdate": "Date",
+  "nationality": "String",
+  "books_written": ["ObjectId"],
+  "bio": "String",
+  "photo": "Binary Data"
+}
+
+---------------------Colectia Clienti---------------------
+{
+  "_id": "ObjectId",
+  "username": "String",
+  "password": "String",
+  "email": "String",
+  "created_at": "Date",
+  "purchases": [
+    {
+      "order_id": "ObjectId",
+      "date": "Date",
+      "total": "Number"
+    }
+  ]
+}
+
+---------------------Colectia Comenzi---------------------
+{
+  "_id": "ObjectId",
+  "customer_id": "ObjectId",
+  "order_date": "Date",
+  "total_amount": "Number",
+  "books_ordered": [
+    {
+      "book_id": "ObjectId",
+      "quantity": "Number",
+      "price": "Number"
+    }
+  ],
+  "shipped": "Boolean"
+}

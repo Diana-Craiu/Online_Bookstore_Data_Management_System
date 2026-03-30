@@ -1,0 +1,268 @@
+---------------------Colectia Carti---------------------
+
+//folosirea unui cursor pentru a extrage toate cartile care au ca gen "Software Development"
+const cursor = db.Carti.find({ genre: "Software Development" }).sort({ publication_date: 1 });
+while (cursor.hasNext()) {
+    const book = cursor.next();
+    //afisarea titlului pentru fiecare carte
+    print(book.title);
+}
+
+// afisarea nr de carti de genul "Software Development" a fiecarui autor
+db.Carti.aggregate([
+    { $match: { genre: "Software Development" } },
+    { $group: { _id: "$author_id", totalBooks: { $sum: 1 } } }
+]);
+
+
+//afisarea pentru fiecare titlu de carte si numele autorului asociat
+db.Carti.aggregate([
+    {
+        $lookup: {
+            from: "Autori",
+            localField: "author_id",
+            foreignField: "_id",
+            as: "author"
+        }
+    },
+    { $unwind: "$author" },
+    { $project: { title: 1, author: "$author.name" } }
+]);
+
+// calcularea numarului total de carti disponibile in fiecare gen
+db.Carti.aggregate([
+    { $match: { available: true } },
+    { $group: { _id: "$genre", totalAvailableBooks: { $sum: 1 } } }
+]);
+
+//afiseaza numele autorilor si numarul de carti scrise de fiecare autor sortate descrescator după numarul de carti 
+db.Carti.aggregate([
+    {
+        $lookup: {
+            from: "Autori",
+            localField: "author_id",
+            foreignField: "_id",
+            as: "author"
+        }
+    },
+    { $unwind: "$author" },
+    { $group: { _id: "$author.name", totalBooksWritten: { $sum: 1 } } },
+    { $sort: { totalBooksWritten: -1 } }
+]);
+
+// afisarea detaliilor cartilor cu genul "Programming" si pretul mai mic de 30 sortate crescator dupa data de publicare
+db.Carti.find({ genre: "Programming", price: { $lt: 30 } }).sort({ publication_date: 1 }).forEach(book => {
+    printjson(book);
+});
+
+---------------------Colectia Autori---------------------
+
+//folosirea unui cursor pentru a extrage toti autorii care au ca nationalitate "American"
+const cursor = db.Autori.find({ nationality: "American" });
+while (cursor.hasNext()) {
+    const author = cursor.next();
+     //afisarea autorului a carei nationalitate este "American"
+    print(author.name);
+}
+
+//folosirea unui cursor pentru a extrage toti autorii nascuti dupa  1960
+const cursorAuthors = db.Autori.find({ birthdate: { $gt: ISODate("1960-01-01") } });
+while (cursorAuthors.hasNext()) {
+    const author = cursorAuthors.next();
+    print(author.name);
+}
+
+//afiseaza numarul de autori a caror nationalitate este "American"
+db.Autori.aggregate([
+    { $match: { nationality: "American" } },
+    { $group: { _id: null, totalAuthors: { $sum: 1 } } }
+]);
+
+//afisarea pentru fiecare autor cartile scrise
+db.Autori.aggregate([
+    {
+        $lookup: {
+            from: "Carti",
+            localField: "books_written",
+            foreignField: "_id",
+            as: "books"
+        }
+    },
+    { $project: { name: 1, books: "$books.title" } }
+]);
+
+
+//afisarea autorilor descrescator dupa numarul total de carti scrise
+db.Autori.aggregate([
+    {
+        $lookup: {
+            from: "Carti",
+            localField: "books_written",
+            foreignField: "_id",
+            as: "books"
+        }
+    },
+    { $project: { name: 1, totalBooksWritten: { $size: "$books_written" } } },
+    { $sort: { totalBooksWritten: -1 } },
+    { $limit: 5 }
+]);
+
+//afisarea nr de autori dupa fiecare nationalitate
+db.Autori.aggregate([
+    { $group: { _id: "$nationality", totalAuthors: { $sum: 1 } } }
+]);
+
+//afisarea autorilor care au scris mai mult de 400 de pagini
+db.Autori.aggregate([
+    {
+        $lookup: {
+            from: "Carti",
+            localField: "books_written",
+            foreignField: "_id",
+            as: "books"
+        }
+    },
+    {
+        $addFields: {
+            totalPages: { $sum: "$books.details.pages" }
+        }
+    },
+    { $match: { totalPages: { $gt: 400 } } },
+    { $project: { name: 1 } }
+]);
+
+---------------------Colectia Clienti---------------------
+
+//selecteaza ultimii 5 clienti inregistrati sortandu-i in ordine descrescatoare dupa data de creare si afisandu-le numele de utilizator
+const cursor = db.Clienti.find({}).sort({ created_at: -1 }).limit(5);
+while (cursor.hasNext()) {
+    const client = cursor.next();
+    print(client.username);
+}
+
+//afiseaza totalul de clienti
+db.Clienti.aggregate([
+    { $group: { _id: null, totalClients: { $sum: 1 } } }
+]);
+
+// returneaza numărul total de comenzi efectuate de fiecare client alaturi de numele utilizatorului
+db.Clienti.aggregate([
+    {
+        $lookup: {
+            from: "Comenzi",
+            localField: "purchases.order_id",
+            foreignField: "_id",
+            as: "orders"
+        }
+    },
+    { $project: { username: 1, orders: { $size: "$orders" } } }
+]);
+
+//afisarea numarului total de clienti inregistrati pe fiecare luna
+db.Clienti.aggregate([
+    {
+        $group: {
+            _id: { $month: "$created_at" },
+            totalClients: { $sum: 1 }
+        }
+    },
+    { $sort: { "_id": 1 } }
+]);
+
+//afiseaza toti clientii care au cumparat de mai mult de 70 de lei
+db.Clienti.aggregate([
+    {
+        $unwind: "$purchases"
+    },
+    {
+        $group: {
+            _id: "$_id",
+            totalSpent: { $sum: "$purchases.total" }
+        }
+    },
+    { $match: { totalSpent: { $gt: 70 } } },
+    {
+        $lookup: {
+            from: "Comenzi",
+            localField: "_id",
+            foreignField: "customer_id",
+            as: "orders"
+        }
+    },
+    { $project: { username: 1, totalSpent: 1, ordersCount: { $size: "$orders" } } }
+]);
+
+---------------------Colectia Comenzi---------------------
+
+// folosirea unui cursor pentru a afisa toate comenzile care nu au fost inca expediate
+const cursor = db.Comenzi.find({ shipped: false });
+while (cursor.hasNext()) {
+    const order = cursor.next();
+    // afisarea id-ului comenzii si totalul acesteia
+    print("Order ID:", order._id, "- Total amount:", order.total_amount);
+}
+
+//afisarea id ului tutoror comenzilor plasate inainte de 1 ianuarie 2023
+const cursorOldOrders = db.Comenzi.find({ order_date: { $lt: ISODate("2023-01-01") } });
+while (cursorOldOrders.hasNext()) {
+    const order = cursorOldOrders.next();
+    print(order._id);
+}
+
+// afiseaza numarul total de comenzi care nu au fost inca expediate
+db.Comenzi.aggregate([
+    { $match: { shipped: false } },
+    { $group: { _id: null, totalUnshippedOrders: { $sum: 1 } } }
+]);
+
+// afiseaza pentru fiecare comanda id-ul, data comenzii si numarul cartilor comandate
+db.Comenzi.aggregate([
+    { $project: { _id: 1, order_date: 1, totalBooks: { $size: "$books_ordered" } } }
+]);
+
+// afiseaza totalul de comenzi pentru fiecare luna a anului 2023
+db.Comenzi.aggregate([
+    {
+        $match: {
+            order_date: {
+                $gte: ISODate("2023-01-01"),
+                $lt: ISODate("2024-01-01")
+            }
+        }
+    },
+    {
+        $group: {
+            _id: { $month: "$order_date" },
+            totalOrders: { $sum: 1 }
+        }
+    }
+]);
+
+//afiseaza toate comenzile care nu au fost trimise si care contine cel putin o carte cu pretul mai mare decat 40
+db.Comenzi.aggregate([
+    {
+        $match: {
+            shipped: false,
+            "books_ordered.price": { $gt: 40 }
+        }
+    }
+]);
+
+//afisarea valorii medii a comenzilor plasate in fiecare luna a anului 2023
+db.Comenzi.aggregate([
+    {
+        $match: {
+            order_date: {
+                $gte: ISODate("2023-01-01"),
+                $lt: ISODate("2024-01-01")
+            }
+        }
+    },
+    {
+        $group: {
+            _id: { $month: "$order_date" },
+            averageOrderValue: { $avg: "$total_amount" }
+        }
+    },
+    { $sort: { "_id": 1 } }
+]);

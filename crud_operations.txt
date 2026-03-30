@@ -1,0 +1,403 @@
+---------------------Colectia Carti---------------------
+
+db.Carti.insertMany([
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf12"),
+    title: "Clean Code",
+    author_id: ObjectId("60c72b2f9b1d8b5a3f4fdf13"),
+    publication_date: new Date("2008-08-01T00:00:00Z"),
+    price: 29.99,
+    genre: ["Software Development", "Programming"],
+    tags: /clean/i,
+    available: true,
+    details: {
+      pages: 464,
+      publisher: "Prentice Hall"
+    },
+    reviews: [
+      {
+        user: "ion_popescu",
+        rating: 5,
+        comment: "Excelent"
+      },
+      {
+        user: "vasile_popescu",
+        rating: 4,
+        comment: "Informativ"
+      }
+    ]
+  }
+]);
+
+
+db.Carti.insertMany([
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf16"),
+    title: "The Pragmatic Programmer",
+    author_id: ObjectId("60c72b2f9b1d8b5a3f4fdf17"),
+    publication_date: new Date("1999-10-20T00:00:00Z"),
+    price: 39.99,
+    genre: ["Software Development", "Programming"],
+    tags: /pragmatic/i,
+    available: true,
+    details: {
+      pages: 352,
+      publisher: "Addison-Wesley"
+    },
+    reviews: [
+      {
+        user: "ionel_zamfir",
+        rating: 5,
+        comment: "O lectura foarte buna pentru dezvoltatori."
+      }
+    ]
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf18"),
+    title: "Design Patterns",
+    author_id: ObjectId("60c72b2f9b1d8b5a3f4fdf19"),
+    publication_date: new Date("1994-10-21T00:00:00Z"),
+    price: 49.99,
+    genre: ["Software Development", "Design"],
+    tags: /patterns/i,
+    available: true,
+    details: {
+      pages: 395,
+      publisher: "Addison-Wesley Professional"
+    },
+    reviews: [
+      {
+        user: "alexandru_popescu",
+        rating: 5,
+        comment: "O carte esentiala pentru inginerii software."
+      }
+    ]
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf20"),
+    title: "Refactoring",
+    author_id: ObjectId("60c72b2f9b1d8b5a3f4fdf21"),
+    publication_date: new Date("1999-07-08T00:00:00Z"),
+    price: 45.99,
+    genre: ["Software Development", "Programming"],
+    tags: /refactor/i,
+    available: true,
+    details: {
+      pages: 448,
+      publisher: "Addison-Wesley"
+    },
+    reviews: [
+      {
+        user: "laura_vasilescu",
+        rating: 4,
+        comment: "O carte excelenta despre imbunatatirea codului."
+      }
+    ]
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf22"),
+    title: "Code Complete",
+    author_id: ObjectId("60c72b2f9b1d8b5a3f4fdf23"),
+    publication_date: new Date("2004-06-09T00:00:00Z"),
+    price: 39.99,
+    genre: ["Software Development", "Programming"],
+    tags: /complete/i,
+    available: true,
+    details: {
+      pages: 960,
+      publisher: "Microsoft Press"
+    },
+    reviews: [
+      {
+        user: "david_florescu",
+        rating: 5,
+        comment: "Cuprinzatoare si detaliata."
+      }
+    ]
+  }
+]);
+---------------------Colectia Autori---------------------
+
+db.Autori.insertOne({
+  _id: ObjectId("60c72b2f9b1d8b5a3f4fdf13"),
+  name: "Robert C. Martin",
+  birthdate: new Date("1952-12-05T00:00:00Z"),
+  nationality: "American",
+  books_written: [ObjectId("60c72b2f9b1d8b5a3f4fdf12")],
+  bio: "Robert Cecil Martin, cunoscut colocvial sub numele de „Uncle Bob”, este un inginer software american, instructor și autor de best-sellere.",
+  photo: new BinData(0, "base64encodedstring")
+});
+
+
+db.Autori.insertMany([
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf17"),
+    name: "Andrew Hunt",
+    birthdate: new Date("1964-06-30T00:00:00Z"),
+    nationality: "American",
+    books_written: [ObjectId("60c72b2f9b1d8b5a3f4fdf16")],
+    bio: "Andrew Hunt este un autor de carti despre dezvoltarea software.",
+    photo: new BinData(0, "base64encodedstring")
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf19"),
+    name: "Erich Gamma",
+    birthdate: new Date("1961-03-13T00:00:00Z"),
+    nationality: "Elvetian",
+    books_written: [ObjectId("60c72b2f9b1d8b5a3f4fdf18")],
+    bio: "Erich Gamma este unul dintre autorii cartii Design Patterns.",
+    photo: new BinData(0, "base64encodedstring")
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf21"),
+    name: "Martin Fowler",
+    birthdate: new Date("1963-12-18T00:00:00Z"),
+    nationality: "Britanic",
+    books_written: [ObjectId("60c72b2f9b1d8b5a3f4fdf20")],
+    bio: "Martin Fowler este un dezvoltator software si autor cunoscut international",
+    photo: new BinData(0, "base64encodedstring")
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf23"),
+    name: "Steve McConnell",
+    birthdate: new Date("1962-02-27T00:00:00Z"),
+    nationality: "American",
+    books_written: [ObjectId("60c72b2f9b1d8b5a3f4fdf22")],
+    bio: "Steve McConnell este un autor si inginer software.",
+    photo: new BinData(0, "base64encodedstring")
+  }
+]);
+---------------------Colectia Clienti---------------------
+
+db.Clienti.insertOne({
+  _id: ObjectId("60c72b2f9b1d8b5a3f4fdf14"),
+  username: "maria_cara",
+  password: "hashed_password",
+  email: "mariacara456@yahoo.com",
+  created_at: new Date("2022-01-01T12:00:00Z"),
+  purchases: [
+    {
+      order_id: ObjectId("60c72b2f9b1d8b5a3f4fdf15"),
+      date: new Date("2022-02-15T15:00:00Z"),
+      total: 59.98
+    }
+  ]
+});
+
+db.Clienti.insertMany([
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf24"),
+    username: "ionel_zamfir",
+    password: "hashed_password",
+    email: "ionel_zamfir@yahoo.com",
+    created_at: new Date("2023-01-01T12:00:00Z"),
+    purchases: [
+      {
+        order_id: ObjectId("60c72b2f9b1d8b5a3f4fdf25"),
+        date: new Date("2023-02-15T15:00:00Z"),
+        total: 79.98
+      }
+    ]
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf26"),
+    username: "alexandru_popescu",
+    password: "hashed_password",
+    email: "alexandru_popescu@yahoo.com",
+    created_at: new Date("2023-01-05T10:00:00Z"),
+    purchases: [
+      {
+        order_id: ObjectId("60c72b2f9b1d8b5a3f4fdf27"),
+        date: new Date("2023-03-10T14:00:00Z"),
+        total: 49.99
+      }
+    ]
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf28"),
+    username: "laura_vasilescu",
+    password: "hashed_password",
+    email: "laura_vasilescu@yahoo.com",
+    created_at: new Date("2023-01-10T09:00:00Z"),
+    purchases: [
+      {
+        order_id: ObjectId("60c72b2f9b1d8b5a3f4fdf29"),
+        date: new Date("2023-04-20T11:00:00Z"),
+        total: 45.99
+      }
+    ]
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf30"),
+    username: "david_florescu",
+    password: "hashed_password",
+    email: "david_florescu@gmail.com",
+    created_at: new Date("2023-01-15T08:00:00Z"),
+    purchases: [
+      {
+        order_id: ObjectId("60c72b2f9b1d8b5a3f4fdf31"),
+        date: new Date("2023-05-05T16:00:00Z"),
+        total: 39.99
+      }
+    ]
+  }
+]);
+---------------------Colectia Comenzi---------------------
+
+db.Comenzi.insertOne({
+  _id: ObjectId("60c72b2f9b1d8b5a3f4fdf15"),
+  customer_id: ObjectId("60c72b2f9b1d8b5a3f4fdf14"),
+  order_date: new Date("2022-02-15T15:00:00Z"),
+  total_amount: 59.98,
+  books_ordered: [
+    {
+      book_id: ObjectId("60c72b2f9b1d8b5a3f4fdf12"),
+      quantity: 2,
+      price: 29.99
+    }
+  ],
+  shipped: false
+});
+
+
+db.Comenzi.insertMany([
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf25"),
+    customer_id: ObjectId("60c72b2f9b1d8b5a3f4fdf24"),
+    order_date: new Date("2023-02-15T15:00:00Z"),
+    total_amount: 79.98,
+    books_ordered: [
+      {
+        book_id: ObjectId("60c72b2f9b1d8b5a3f4fdf16"),
+        quantity: 2,
+        price: 39.99
+      }
+    ],
+    shipped: false
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf27"),
+    customer_id: ObjectId("60c72b2f9b1d8b5a3f4fdf26"),
+    order_date: new Date("2023-03-10T14:00:00Z"),
+    total_amount: 49.99,
+    books_ordered: [
+      {
+        book_id: ObjectId("60c72b2f9b1d8b5a3f4fdf18"),
+        quantity: 1,
+        price: 49.99
+      }
+    ],
+    shipped: true
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf29"),
+    customer_id: ObjectId("60c72b2f9b1d8b5a3f4fdf28"),
+    order_date: new Date("2023-04-20T11:00:00Z"),
+    total_amount: 45.99,
+    books_ordered: [
+      {
+        book_id: ObjectId("60c72b2f9b1d8b5a3f4fdf20"),
+        quantity: 1,
+        price: 45.99
+      }
+    ],
+    shipped: false
+  },
+  {
+    _id: ObjectId("60c72b2f9b1d8b5a3f4fdf31"),
+    customer_id: ObjectId("60c72b2f9b1d8b5a3f4fdf30"),
+    order_date: new Date("2023-05-05T16:00:00Z"),
+    total_amount: 39.99,
+    books_ordered: [
+      {
+        book_id: ObjectId("60c72b2f9b1d8b5a3f4fdf22"),
+        quantity: 1,
+        price: 39.99
+      }
+    ],
+    shipped: true
+  }
+]);
+
+---------------------Update---------------------
+
+db.Carti.updateOne(
+  { title: "Refactoring" },
+  { $set: { price: 49.99 } }
+);
+
+db.Autori.updateOne(
+  { name: "Martin Fowler" },
+  { $set: { nationality: "American" } }
+);
+
+db.Clienti.updateOne(
+  { username: "maria_cara" },
+  { $set: { email: "mariacara456_updated@gmail.com" } }
+);
+
+db.Comenzi.updateOne(
+  { _id: ObjectId("60c72b2f9b1d8b5a3f4fdf27") },
+  { $set: { shipped: false } }
+);
+
+
+---------------------Delete---------------------
+
+db.Carti.deleteOne(
+  { title: "Code Complete" }
+);
+
+db.Autori.deleteOne(
+  { name: "Steve McConnell" }
+);
+
+db.Clienti.deleteOne(
+  { username: "david_florescu" }
+);
+
+db.Comenzi.deleteOne(
+  { _id: ObjectId("60c72b2f9b1d8b5a3f4fdf31") }
+);
+
+
+---------------------Update Subdocumente---------------------
+
+db.Carti.updateOne(
+  { title: "Refactoring", "reviews.user": "laura_vasilescu" },
+  { $set: { "reviews.$.comment": "Aceasta carte mi-a imbunatatit in mod semnificativ abilitatile de programare." } }
+);
+
+db.Carti.updateOne(
+  { title: "Refactoring" },
+  {
+    $push: {
+      reviews: {
+        $each: [
+          { user: "oana_roma", rating: 4, comment: "Recomand" },
+          { user: "marin_sorin", rating: 3, comment: "O carte buna, dar mai exista loc de imbunatatiri." }
+        ]
+      }
+    }
+  }
+);
+
+db.Carti.updateOne(
+  { title: "Clean Code", "reviews.user": "vasile_popescu" },
+  { $set: { "reviews.$.rating": 5 } }
+);
+
+db.Autori.updateOne(
+  { name: "Robert C. Martin" },
+  { $push: { books_written: ObjectId("60c72b2f9b1d8b5a3f4fdf32") } }
+);
+
+db.Clienti.updateOne(
+  { _id: ObjectId("60c72b2f9b1d8b5a3f4fdf14"), "purchases.order_id": ObjectId("60c72b2f9b1d8b5a3f4fdf15") },
+  { $set: { "purchases.$.total": 69.98 } }
+);
+
+db.Comenzi.updateOne(
+  { _id: ObjectId("60c72b2f9b1d8b5a3f4fdf15"), "books_ordered.book_id": ObjectId("60c72b2f9b1d8b5a3f4fdf12") },
+  { $set: { "books_ordered.$.quantity": 3 } }
+);

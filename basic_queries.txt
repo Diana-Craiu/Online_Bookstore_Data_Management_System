@@ -1,0 +1,81 @@
+---------------------Colectia Carti---------------------
+
+// cautarea cartilor cu rating-ul mai mare sau egal cu 4
+db.Carti.find({ "reviews.rating": { $gte: 4 } });
+
+// cautarea cartilor care au un anumit tag
+db.Carti.find({ tags: /patterns/i });
+
+// proiectia atributelor pentru a returna doar titlurile si autorii cartilor
+db.Carti.find({}, { title: 1, author_id: 1 });
+
+// cautarea cartilor care au detaliile editorului nule
+db.Carti.find({ "details.publisher": null });
+
+// cautarea cartilor care au fost publicate dupa anul 2000, sortate descrescator dupa data publicarii
+db.Carti.find({ publication_date: { $gt: new Date("2000-01-01") } }).sort({ publication_date: -1 });
+
+// cautarea paginata a cartilor, unde se afiseaza cate 2 documente pe pagina si se returneaza pagina 1
+db.Carti.find().limit(2).skip(0);
+
+---------------------Colectia Autori---------------------
+
+// cautarea autorilor care sunt de nationalitate americana
+db.Autori.find({ nationality: "American" });
+
+// cautarea autorilor care au scris o anumita carte
+db.Autori.find({ books_written: ObjectId("60c72b2f9b1d8b5a3f4fdf12") });
+
+// proiectia atributelor pentru a returna doar numele si data nasterii autorilor
+db.Autori.find({}, { name: 1, birthdate: 1 });
+
+// cautarea autorilor care nu au fotografia specificata
+db.Autori.find({ photo: { $exists: false } });
+
+// cautarea autorilor sortati descrescator dupa data nasterii
+db.Autori.find().sort({ birthdate: -1 });
+
+// cautarea paginata a autorilor, unde se afiseaza cate 3 documente pe pagina si se returneaza pagina 2
+db.Autori.find().limit(3).skip(3);
+
+---------------------Colectia Clienti---------------------
+
+
+// cautarea clientilor care au efectuat achizitii inainte de 2023
+db.Clienti.find({ created_at: { $lt: new Date("2023-01-01") } });
+
+// cautarea clientilor care au facut o anumita achizitie
+db.Clienti.find({ "purchases.order_id": ObjectId("60c72b2f9b1d8b5a3f4fdf15") });
+
+// proiectia atributelor pentru a returna doar username-urile clientilor
+db.Clienti.find({}, { username: 1 });
+
+// cautarea clientilor care nu au specificat o parola
+db.Clienti.find({ password: null });
+
+// Cautarea clientilor sortati alfabetic dupa adresa de email
+db.Clienti.find().sort({ email: 1 });
+
+// cautarea paginata a clientilor, unde se afiseaza cate 2 documente pe pagina si se returneaza pagina 3
+db.Clienti.find().limit(2).skip(4);
+
+---------------------Colectia Comenzi---------------------
+
+// cautarea comenzilor care nu au fost expediate
+db.Comenzi.find({ shipped: false });
+
+// cautarea comenzilor care contin anumite carti
+db.Comenzi.find({ "books_ordered.book_id": ObjectId("60c72b2f9b1d8b5a3f4fdf12") });
+
+// proiectia atributelor pentru a returna doar id-urile comenzilor
+db.Comenzi.find({}, { _id: 1 });
+
+// cautarea comenzilor care nu contin informatii despre expediere
+db.Comenzi.find({ shipped: null });
+
+// cautarea comenzilor sortate descrescator dupa valoarea totala
+db.Comenzi.find().sort({ total_amount: -1 });
+
+// cautarea paginata a comenzilor, unde se afiseaza cate 4 documente pe pagina si se returneaza pagina 2
+db.Comenzi.find().limit(4).skip(4);
+
